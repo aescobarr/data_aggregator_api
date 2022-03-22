@@ -4,10 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'main/javascript/leaflet/leaflet.css' %}"/>
+    <link rel="stylesheet" href="{% static 'main/javascript/markercluster/MarkerCluster.Default.css' %}"/>
+    <link rel="stylesheet" href="{% static 'main/javascript/markercluster/MarkerCluster.css' %}"/>
     <style>
         #map {
             height: 720px;
-            width: 720px;
+            width: 100%;
         }
         #pages li {
             display:inline;
@@ -20,8 +22,18 @@
 <body>
     <div id="map"></div>
     <div><ul id="pages"></ul></div>
+    <div>
+        <ul>
+            <li id="recent"></li>
+            <li id="last"></li>
+        </ul>
+    </div>
 </body>
+<script>
+    var _inat_icon_url = "{% static 'main/javascript/leaflet/images/inat_marker_icon.png' %}";
+</script>
 <script src="{% static 'main/javascript/jquery/jquery-3.6.0.min.js' %}"></script>
 <script src="{% static 'main/javascript/leaflet/leaflet.js' %}"></script>
+<script src="{% static 'main/javascript/markercluster/leaflet.markercluster.js' %}"></script>
 <script src="{% static 'main/javascript/map_demo.js' %}"></script>
 </html>
