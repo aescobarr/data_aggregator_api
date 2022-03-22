@@ -1,6 +1,7 @@
 data_aggregator_api/settings_local.py
 data_aggregator_api/settings_local*
 *.csv
+*.json
 *.log.*
 *.log
 *.script
