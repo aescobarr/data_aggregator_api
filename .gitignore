@@ -1,0 +1,14 @@
+data_aggregator_api/settings_local.py
+data_aggregator_api/settings_local*
+*.csv
+*.log.*
+*.log
+*.script
+*.txt
+*pyc
+*.egg-info
+.idea/*
+*.sublime-project
+*.sublime-workspace
+*.sublime*
+
