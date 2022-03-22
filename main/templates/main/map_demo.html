@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'main/javascript/leaflet/leaflet.css' %}"/>
+    <style>
+        #map {
+            height: 720px;
+            width: 720px;
+        }
+        #pages li {
+            display:inline;
+            padding-left:3px;
+            padding-right:3px;
+        }
+    </style>
+    <title>Map demo</title>
+</head>
+<body>
+    <div id="map"></div>
+    <div><ul id="pages"></ul></div>
+</body>
+<script src="{% static 'main/javascript/jquery/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'main/javascript/leaflet/leaflet.js' %}"></script>
+<script src="{% static 'main/javascript/map_demo.js' %}"></script>
+</html>
