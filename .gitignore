@@ -5,7 +5,6 @@ data_aggregator_api/settings_local*
 *.log.*
 *.log
 *.script
-*.txt
 *pyc
 *.egg-info
 .idea/*
