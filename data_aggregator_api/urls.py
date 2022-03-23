@@ -7,6 +7,7 @@ from main.views import map_demo
 urlpatterns = [
     path('', map_demo),
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('api/', include('main.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
