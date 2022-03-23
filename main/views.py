@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 import django_filters.rest_framework
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
+from django.contrib.auth.decorators import login_required
 
 
 class ObservationFilter(filters.FilterSet):
@@ -28,5 +29,6 @@ class ObservationViewSet(viewsets.ReadOnlyModelViewSet):
     ordering_fields = ['species', 'origin', 'observation_time']
 
 
+@login_required
 def map_demo(request):
     return render(request, 'main/map_demo.html', {})
