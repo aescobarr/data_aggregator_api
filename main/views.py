@@ -25,8 +25,8 @@ class ObservationViewSet(viewsets.ReadOnlyModelViewSet):
     #filterset_class = ObservationFilter
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     #filter_backends = [ObservationFilter, OrderingFilter]
-    filterset_fields = ['species', 'origin']
-    ordering_fields = ['species', 'origin', 'observation_time']
+    filterset_fields = ['species_guess', 'species_id', 'origin']
+    ordering_fields = ['species_guess', 'species_id', 'origin', 'observation_time']
 
 
 @login_required

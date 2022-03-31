@@ -73,7 +73,7 @@ $(document).ready(function() {
                     var d = data.results[i];
                     if(d.location != null){
                         var marker = get_marker(d);
-                        marker.bindPopup('<b><i>' + d.species + '</i></b><br /><a href="' + d.original_url + '" target="_blank"><img src="' + d.picture_url + '" width="200" height="200"></a><p>' + d.observation_time + '</p>');
+                        marker.bindPopup('<b><i>' + d.species_guess + '</i></b><br /><b><i>' + d.species_id + '</i></b><br /><a href="' + d.original_url + '" target="_blank"><img src="' + d.picture_url + '" width="200" height="200"></a><p>' + d.observation_time + '</p>');
                         marker_cluster.addLayer(marker);
                     }
                     if(d.observation_time != null){

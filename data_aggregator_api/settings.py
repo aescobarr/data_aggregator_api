@@ -153,6 +153,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 INAT_API_BASE_URL = 'https://www.inaturalist.org'
+GBIF_API_BASE_URL = 'https://api.gbif.org/v1/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 from data_aggregator_api.settings_local import *
