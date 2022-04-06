@@ -1,21 +1,7 @@
-import os, sys
-
-proj_path = "/home/webuser/dev/django/data_aggregator_api/"
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "data_aggregator_api.settings")
-sys.path.append(proj_path)
-
-os.chdir(proj_path + "util_scripts/")
-
-from django.core.wsgi import get_wsgi_application
-
-application = get_wsgi_application()
-
+import init_project
 from main.utils import get_adapter_for_origin, replay_event
 from main.models import Observation, LoadEvent
-import json
-from base64 import b64encode
-from data_aggregator_api import settings
-
+from datetime import date
 
 # def init_load_gbif(dataset_uuid):
 #     origin = 'gbif_obervation_org'
@@ -40,13 +26,9 @@ from data_aggregator_api import settings
 #     adapter.load_event.save()
 
 
-def init_load_inaturalist(project_slug):
+def init_load_inaturalist(project_slug, params):
     origin = 'inaturalist'
     adapter = get_adapter_for_origin(origin)
-    params = {
-        'project_slug': project_slug,
-        'pause': 2
-    }
     adapter.load_raw_from_source(params)
 
     Observation.objects.filter(origin=origin).delete()
@@ -56,41 +38,62 @@ def init_load_inaturalist(project_slug):
     #adapter.load_event.save()
 
 
-def update_inaturalist(project_slug):
+def update_inaturalist(project_slug, params):
     origin = 'inaturalist'
     adapter = get_adapter_for_origin(origin)
-    try:
-        latest_observation = Observation.objects.filter(origin=origin).filter(observation_date__isnull=False).latest('observation_date')
-        latest_observation_datetime = latest_observation.observation_date
-        filter_date = latest_observation_datetime.strftime('%Y-%m-%d')
-        # earliest_upload = Observation.objects.filter(origin=origin).earliest('record_creation_time')
-        # earliest_upload_datetime = earliest_upload.record_creation_time
-        # filter_date = earliest_upload_datetime.strftime('%Y-%m-%dT%H:%M:%S%z')
-    except Observation.DoesNotExist:
-        filter_date = None
-    params = {
-        'project_slug': project_slug,
-        'pause': 2,
-        'filter_date': filter_date
-    }
     adapter.load_raw_from_source(params)
     hydrated = adapter.hydrate_all()
     for raw_obs in hydrated:
         try:
-            existing_obs = Observation.objects.filter(origin=origin).get(native_id=raw_obs['id'])
+            existing_obs = Observation.objects.filter(origin=origin).get(native_id=raw_obs.native_id)
             updated_obs = adapter.copy(existing_obs, raw_obs)
             updated_obs.save()
         except Observation.DoesNotExist:
-            observation = adapter.hydrate(raw_obs)
-            observation.save()
+            raw_obs.save()
+            # observation = adapter.hydrate(raw_obs)
+            # observation.save()
+
+
+def load_inaturalist(event_slug):
+    last_event = LoadEvent.objects.filter(origin='inaturalist').filter(event_finish__isnull=False).order_by('-id')
+    if last_event.exists():
+        actual_last_event = last_event.first()
+        d1_date = actual_last_event.event_finish
+        d1 = d1_date.strftime('%Y-%m-%d')
+        d2 = date.today().strftime('%Y-%m-%d')
+        # updated_since_date = actual_last_event.event_finish
+        # updated_since = updated_since_date.strftime('%Y-%m-%dT%H:%M:%S%z')
+        # update_inaturalist(event_slug, updated_since, page_limit)
+        # latest_observation_time = Observation.objects.filter(load_event=actual_last_event).latest('observation_updated_at')
+        # actual_latest_observation_time = latest_observation_time.observation_updated_at
+        # updated_since = actual_latest_observation_time.strftime('%Y-%m-%dT%H:%M:%S%z')
+        # update_inaturalist(event_slug, updated_since, page_limit)
+        params = {
+            'd1': d1,
+            'd2': d2,
+            'project_id': event_slug
+        }
+        update_inaturalist(event_slug, params)
+    else:
+        d1 = "2022-04-03"
+        d2 = date.today().strftime('%Y-%m-%d')
+        params = {
+            'd1': d1,
+            'd2': d2,
+            'project_id': event_slug
+        }
+        init_load_inaturalist(event_slug, params)
 
 
 def main():
     #init_load_inaturalist('stephen-s-yard')
+    #init_load_inaturalist('butterflies-of-europe', page_limit=10)
     #update_inaturalist('stephen-s-yard')
+    #update_inaturalist('butterflies-of-europe')
     #init_load_gbif('8a863029-f435-446a-821e-275f4f641165')
-    l = LoadEvent.objects.get(pk=36)
-    replay_event(l,clear=False)
+    #l = LoadEvent.objects.get(pk=50)
+    #replay_event(l, clear=True)
+    load_inaturalist('butterflies-of-europe')
 
 
 if __name__ == "__main__":

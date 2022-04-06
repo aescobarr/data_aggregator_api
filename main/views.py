@@ -1,13 +1,16 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from main.models import Observation
-from main.serializers import ObservationSerializer
+from main.models import Observation, Region, Stats
+from main.serializers import ObservationSerializer, RegionSerializer
 from django_filters import rest_framework as filters
 from django.shortcuts import redirect
 import django_filters.rest_framework
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from django.contrib.auth.decorators import login_required
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 
 class ObservationFilter(filters.FilterSet):
@@ -18,6 +21,13 @@ class ObservationFilter(filters.FilterSet):
         model = Observation
         fields = ['species','origin']
 
+
+class RegionViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Region.objects.all()
+    serializer_class = RegionSerializer
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ['name']
+    ordering_fields = ['name']
 
 class ObservationViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Observation.objects.all()
@@ -32,3 +42,12 @@ class ObservationViewSet(viewsets.ReadOnlyModelViewSet):
 @login_required
 def map_demo(request):
     return render(request, 'main/map_demo.html', {})
+
+
+@api_view(['GET'])
+def stats_region(request):
+    if request.method == 'GET':
+        data = []
+        for s in Stats.objects.all().order_by('region__name'):
+            data.append( { "region_name": s.region.name,"region_slug":s.region.slug,"n_observations": s.n_observations} )
+        return Response(data=data, status=status.HTTP_200_OK)

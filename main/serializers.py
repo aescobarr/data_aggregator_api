@@ -1,11 +1,18 @@
 from rest_framework import serializers
-from main.models import Observation
+from main.models import Observation, Region
 
 
-class ObservationSerializer(serializers.HyperlinkedModelSerializer):
+class RegionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Region
+        fields = ['name','x_min','x_max','y_min','y_max']
+
+
+class ObservationSerializer(serializers.ModelSerializer):
     location = serializers.SerializerMethodField(method_name='get_location')
     id = serializers.ReadOnlyField()
     load_event = serializers.SerializerMethodField(method_name='get_load_event')
+    region = RegionSerializer(many=False)
 
     class Meta:
         model = Observation

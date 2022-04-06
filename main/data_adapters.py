@@ -1,4 +1,7 @@
 import json
+
+import django.dispatch.dispatcher
+
 from main.models import LoadEvent
 
 proj_path = "/home/webuser/dev/django/data_aggregator_api/"
@@ -38,7 +41,8 @@ class BaseAdapter:
         hydrated = []
         data = self.read_raw_data()
         for raw_obs in data:
-            hydrated.append(self.hydrate(raw_obs))
+            obs = self.hydrate(raw_obs)
+            hydrated.append(obs)
         return hydrated
 
     def copy(self, original, raw_obs):
