@@ -93,8 +93,16 @@ $(document).ready(function() {
                         }
                     }
                 }
-                $('#recent').text( most_recent_date.toLocaleDateString("es-ES") );
-                $('#last').text( latest_date.toLocaleDateString("es-ES") );
+                if( most_recent_date == null ){
+                    $('#recent').text( "Sometime in the past" );
+                }else{
+                    $('#recent').text( most_recent_date.toLocaleDateString("es-ES") );
+                }
+                if( latest_date == null ){
+                    $('#last').text( "Sometime in the future" );
+                }else{
+                    $('#last').text( latest_date.toLocaleDateString("es-ES") );
+                }
                 map.addLayer(marker_cluster);
                 var points = data.results.map(function(d){
                     if(d.location != null){

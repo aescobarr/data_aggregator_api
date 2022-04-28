@@ -48,7 +48,13 @@ class BaseAdapter:
     def copy(self, original, raw_obs):
         pass
 
+    def clone_overwrite(self, original, new_o):
+        pass
+
     def load_raw_from_source(self, params):
+        pass
+
+    def hydrate_from_file(self, file):
         pass
 
 # class GBIFAdapter(BaseAdapter):

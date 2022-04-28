@@ -100,8 +100,7 @@ class InatAdapter(BaseAdapter):
     #         self.load_event.save()
     #     return hydrated
 
-    def copy(self, original, raw_obs):
-        new_o = self.hydrate(raw_obs)
+    def clone_overwrite(self, original, new_o):
         original.species_guess = new_o.species_guess
         original.species_id = new_o.species_id
         original.original_url = new_o.original_url
@@ -115,6 +114,21 @@ class InatAdapter(BaseAdapter):
         original.observation_date = new_o.observation_date
         original.observation_updated_at = new_o.observation_updated_at
         return original
+
+    def copy(self, original, raw_obs):
+        new_o = self.hydrate(raw_obs)
+        original = self.clone_overwrite(original, new_o)
+        return original
+
+    def hydrate_from_file(self, file):
+        json_data = open(file)
+        data = json.load(json_data)
+        observations = []
+        for d in data:
+            obs = self.hydrate(d)
+            observations.append( obs )
+        return observations
+
 
     def load_raw_from_source(self, params):
         base_event_folder = proj_path + "{0}/".format(self.load_event.origin)

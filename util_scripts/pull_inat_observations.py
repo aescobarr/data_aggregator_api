@@ -26,7 +26,7 @@ from datetime import date
 #     adapter.load_event.save()
 
 
-def init_load_inaturalist(project_slug, params):
+def init_load_inaturalist(params):
     origin = 'inaturalist'
     adapter = get_adapter_for_origin(origin)
     adapter.load_raw_from_source(params)
@@ -38,7 +38,7 @@ def init_load_inaturalist(project_slug, params):
     #adapter.load_event.save()
 
 
-def update_inaturalist(project_slug, params):
+def update_inaturalist(params):
     origin = 'inaturalist'
     adapter = get_adapter_for_origin(origin)
     adapter.load_raw_from_source(params)
@@ -73,16 +73,17 @@ def load_inaturalist(event_slug):
             'd2': d2,
             'project_id': event_slug
         }
-        update_inaturalist(event_slug, params)
+        update_inaturalist(params)
     else:
-        d1 = "2022-04-03"
+        #d1 = "2022-04-03"
+        d1 = "1999-01-01"
         d2 = date.today().strftime('%Y-%m-%d')
         params = {
             'd1': d1,
             'd2': d2,
             'project_id': event_slug
         }
-        init_load_inaturalist(event_slug, params)
+        init_load_inaturalist(params)
 
 
 def main():
@@ -93,7 +94,7 @@ def main():
     #init_load_gbif('8a863029-f435-446a-821e-275f4f641165')
     #l = LoadEvent.objects.get(pk=50)
     #replay_event(l, clear=True)
-    load_inaturalist('butterflies-of-europe')
+    load_inaturalist('alien-csi-bioblitz')
 
 
 if __name__ == "__main__":
