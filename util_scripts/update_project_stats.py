@@ -6,6 +6,9 @@ from urllib.parse import urlencode
 import requests
 import json
 import time
+import logging
+
+stats_log = logging.getLogger('stats_update_logger')
 
 region_project = {
     8 : '',
@@ -38,12 +41,12 @@ def update_project_stats(origin,project_slug,region_name):
         try:
             region = Region.objects.get(slug=region_name)
         except Region.DoesNotExist:
-            print("Region with name {0} not found".format(region_name))
+            stats_log.error("Region with name {0} not found".format(region_name))
             sys.exit(2)
         try:
             data_project = DataProject.objects.get(slug=origin)
         except DataProject.DoesNotExist:
-            print("DataProject with name {0} not found".format(origin))
+            stats_log.error("DataProject with name {0} not found".format(origin))
             sys.exit(2)
         params = {
             'project_id' : project_slug,
@@ -54,8 +57,10 @@ def update_project_stats(origin,project_slug,region_name):
             'swlng': region.x_min
         }
         project_url = settings.INAT_API_BASE_URL + 'observations/' + '?' + urlencode(params)
+        stats_log.debug("Pulling from url {0}".format(project_url))
         response = requests.get(project_url)
         if response.status_code == 200:
+            stats_log.debug("Response status is {0}".format(response.status_code))
             pulled_data = json.loads(response.content.decode('utf-8'))
             total_records = pulled_data['total_results']
             try:
@@ -68,15 +73,15 @@ def update_project_stats(origin,project_slug,region_name):
             stats.n_observations = total_records
             stats.save()
         else:
-            print("Server responded to url {0} with code {1}, aborting".format(project_url, str(response.status_code)))
+            stats_log.error("Response status is {0}".format("Server responded to url {0} with code {1}, aborting".format(project_url, str(response.status_code))))
             sys.exit(2)
     else:
-        print("Origin {0} not implemented".format( origin ))
+        stats_log.error("Origin {0} not implemented".format( origin ))
         sys.exit(2)
 
 
 def update_region(origin, region_id, slug):
-    print('Updating {0}'.format( slug ))
+    stats_log.debug("Pulling data for origin - {0} | region_id - {1} | slug - {2}".format(origin, region_id, slug))
     params = {
         'project_id': slug,
         'per_page': 1
@@ -86,9 +91,10 @@ def update_region(origin, region_id, slug):
     project_url = settings.INAT_API_BASE_URL + 'observations/' + '?' + urlencode(params)
     response = requests.get(project_url)
     if response.status_code == 200:
+        stats_log.debug("Response status is {0}".format(response.status_code))
         pulled_data = json.loads(response.content.decode('utf-8'))
         total_records = pulled_data['total_results']
-        print("{0} total records".format(total_records))
+        stats_log.debug("{0} total records".format(total_records))
         try:
             stats = Stats.objects.get(region=region, project=data_project)
         except Stats.DoesNotExist:
@@ -99,8 +105,8 @@ def update_region(origin, region_id, slug):
         stats.n_observations = total_records
         stats.save()
     else:
-        print("Server responded to url {0} with code {1}, aborting".format(project_url, str(response.status_code)))
-    print("Now wait a little")
+        stats_log.error("Server responded to url {0} with code {1}, aborting".format(project_url, str(response.status_code)))
+    stats_log.debug("Now waiting a little...")
     time.sleep(10)
 
 
@@ -113,14 +119,18 @@ def update_all_regions(origin):
 def main(argv):
     if len(argv) != 3:
         if len(argv) == 2 and argv[1] == 'all':
+            stats_log.debug('******* Starting UPDATE of all regions ******')
             update_all_regions(argv[0])
+            stats_log.debug('******* Finished UPDATE of all regions ******')
             sys.exit(0)
         else:
             print("Usage: update_project_stats.py origin project_slug region_name || update_project_stats.py origin all ")
+            stats_log.error('Incorrect parameters in call')
             sys.exit(2)
     origin = argv[0]
     project_slug = argv[1]
     region_name = argv[2]
+    stats_log.debug('Parameters are origin - {0} project_slug - {1} region_name - {2}'.format( origin, project_slug, region_name ))
     update_project_stats(origin,project_slug,region_name)
 
 

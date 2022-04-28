@@ -9,8 +9,11 @@ import requests
 import time
 from urllib.parse import urlencode
 from data_aggregator_api import settings
+import logging
 
 proj_path = str(settings.BASE_DIR) + "/"
+
+loadevent_log = logging.getLogger('loadevent_logger')
 
 class InatAdapter(BaseAdapter):
     def __init__(self, origin, load_event=None):
@@ -177,15 +180,16 @@ class InatAdapter(BaseAdapter):
             page = counter + 1
             merged_params['page'] = page
             project_url = settings.INAT_API_BASE_URL + 'observations/' + '?' + urlencode(merged_params)
+            loadevent_log.debug('Pulling from url {0}'.format(project_url))
             response = requests.get(project_url)
-            print("Obtaining page number " + str(page))
+            loadevent_log.debug('Obtaining page number {0}'.format(page))
             if response.status_code == 200:
                 counter = counter + 1
-                print("Page " + str(page) + " obtained succesfully")
+                loadevent_log.debug('Page {0} obtained successfully'.format(page))
                 pulled_data = json.loads(response.content.decode('utf-8'))
                 total_records = pulled_data['total_results']
                 if len(pulled_data['results']) == 0:
-                    print("Pulled no records, stopping download")
+                    loadevent_log.debug("Pulled no records, stopping download")
                     endloop = True
                 else:
                     total_pulled += len(pulled_data['results'])
@@ -194,14 +198,14 @@ class InatAdapter(BaseAdapter):
                         json.dump(pulled_data['results'], outfile)
                     chunks.append(load_event_folder + "/" + filename)
                     if page_limit is not None and page == page_limit:
-                        print("Pulled {0} records, {1} accumulated of total {2} records, reached page limit, stopping download".format(len(pulled_data['results']), total_pulled, total_records))
+                        loadevent_log.debug("Pulled {0} records, {1} accumulated of total {2} records, reached page limit, stopping download".format(len(pulled_data['results']), total_pulled, total_records))
                         endloop = True
                     else:
-                        print("Pulled {0} records, {1} accumulated of total {2} records, resuming download".format(len(pulled_data['results']),total_pulled, total_records))
+                        loadevent_log.debug("Pulled {0} records, {1} accumulated of total {2} records, resuming download".format(len(pulled_data['results']),total_pulled, total_records))
             else:
-                print("Failed to obtain records from page " + str(page))
+                loadevent_log.debug("Failed to obtain records from page {0}".format(page))
             if not endloop:
-                print("Now waiting {0} seconds...".format(pause))
+                loadevent_log.debug("Now waiting {0} seconds...".format(pause))
                 time.sleep(pause)
         self.load_event.event_finish = datetime.datetime.now()
         self.load_event.data_chunks = json.dumps(chunks)

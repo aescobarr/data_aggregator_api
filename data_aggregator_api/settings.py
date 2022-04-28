@@ -159,3 +159,69 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 from data_aggregator_api.settings_local import *
 
 CORS_ALLOW_ALL_ORIGINS: True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue'
+        }
+    },
+    'formatters': {
+        'verbose': {
+            #'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d - %(message)s',
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} - {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'load_logger': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'loadevent.log'),
+            'maxBytes': 1024*1024*15, # 15MB
+            'backupCount': 10,
+            'formatter': 'verbose',
+        },
+        'stats_logger': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'statsupdate.log'),
+            'maxBytes': 1024*1024*15, # 15MB
+            'backupCount': 10,
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+        },
+        'console_debug_false': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'console_debug_false'],
+            'level': 'INFO',
+        },
+        'loadevent_logger': {
+            'handlers': ['load_logger',],
+            'level': 'DEBUG',
+        },
+        'stats_update_logger': {
+            'handlers': ['stats_logger',],
+            'level': 'DEBUG',
+        }
+    }
+}
