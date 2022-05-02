@@ -11,7 +11,7 @@ import logging
 stats_log = logging.getLogger('stats_update_logger')
 
 region_project = {
-    8 : '',
+    8 : 'akrotiri-bioblitz-2022',
     44 : '',
     53 : '',
     54 : 'kaisariani-forest-bioblitz-2022',
@@ -35,6 +35,7 @@ region_project = {
 # https://www.inaturalist.org/projects/turkiye-de-bulunan-bazi-egzotik-turlerin-izlenmesi | place_id - https://www.inaturalist.org/places/7183
 # https://www.inaturalist.org/projects/ias-bioblitz-sardegna | place_id - https://www.inaturalist.org/places/150929
 # https://www.inaturalist.org/projects/kaisariani-forest-bioblitz-2022 | place_id - https://www.inaturalist.org/places/52757
+# https://www.inaturalist.org/projects/akrotiri-bioblitz-2022 | place_id - https://www.inaturalist.org/places/140296
 
 
 def update_project_stats(origin,project_slug,region_name):
