@@ -53,7 +53,8 @@ def update_inaturalist(params):
     for raw_obs in hydrated:
         try:
             existing_obs = Observation.objects.filter(origin=origin).get(native_id=raw_obs.native_id)
-            updated_obs = adapter.copy(existing_obs, raw_obs)
+            #updated_obs = adapter.copy(existing_obs, raw_obs)
+            updated_obs = adapter.clone_overwrite(existing_obs, raw_obs)
             updated_obs.save()
         except Observation.DoesNotExist:
             raw_obs.save()
