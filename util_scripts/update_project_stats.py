@@ -24,6 +24,7 @@ region_project = {
     45 : 'ias-bioblitz-czech-republic',
     64 : 'turkiye-de-bulunan-bazi-egzotik-turlerin-izlenmesi',
     55 : 'ias-bioblitz-sardegna',
+    65 : 'alien-species-in-poland-bioblitz-2022'
 }
 
 # https://www.inaturalist.org/projects/alien-csi-bioblitz - umbrella
@@ -36,6 +37,7 @@ region_project = {
 # https://www.inaturalist.org/projects/ias-bioblitz-sardegna | place_id - https://www.inaturalist.org/places/150929
 # https://www.inaturalist.org/projects/kaisariani-forest-bioblitz-2022 | place_id - https://www.inaturalist.org/places/52757
 # https://www.inaturalist.org/projects/akrotiri-bioblitz-2022 | place_id - https://www.inaturalist.org/places/140296
+# https://www.inaturalist.org/projects/alien-species-in-poland-bioblitz-2022 | place_id - https://www.inaturalist.org/places/poland
 
 
 def update_project_stats(origin,project_slug,region_name):
