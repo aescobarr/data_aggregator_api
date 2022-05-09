@@ -81,7 +81,8 @@ def load_inaturalist(event_slug):
         params = {
             'd1': d1,
             'd2': d2,
-            'project_id': event_slug
+            'project_id': event_slug,
+            'per_page': 200
         }
         update_inaturalist(params)
     else:
@@ -92,7 +93,8 @@ def load_inaturalist(event_slug):
         params = {
             'd1': d1,
             'd2': d2,
-            'project_id': event_slug
+            'project_id': event_slug,
+            'per_page': 200
         }
         init_load_inaturalist(params)
 

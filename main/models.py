@@ -53,6 +53,8 @@ class Observation(models.Model):
     native_id = models.TextField('Id of the observation in its native app',null=True, blank=True)
     load_event = models.ForeignKey(LoadEvent, on_delete=models.CASCADE, null=True)
     region = models.ForeignKey(Region, blank=True, null=True, on_delete=models.CASCADE, )
+    iconic_taxon_id = models.IntegerField(blank=True, null=True)
+    iconic_taxon_name = models.TextField(blank=True, null=True)
     objects = GeoManager()
 
     def __str__(self):

@@ -33,6 +33,15 @@ class InatAdapter(BaseAdapter):
                 species_id = 'Unknown'
         except KeyError:
             species_id = 'Unknown'
+        iconic_taxon_name = None
+        iconic_taxon_id = None
+        try:
+            taxon = raw_obs['taxon']
+            if taxon is not None:
+                iconic_taxon_name = taxon['iconic_taxon_name']
+                iconic_taxon_id = taxon['iconic_taxon_id']
+        except KeyError:
+            pass
         native_id = raw_obs['id']
         original_url = raw_obs['uri']
         updated_at = raw_obs['updated_at']
@@ -81,7 +90,9 @@ class InatAdapter(BaseAdapter):
             load_event = self.load_event,
             observation_date = observation_date,
             observation_updated_at = updated_at,
-            region = region
+            region = region,
+            iconic_taxon_name = iconic_taxon_name,
+            iconic_taxon_id = iconic_taxon_id
         )
         return o
 
@@ -116,6 +127,8 @@ class InatAdapter(BaseAdapter):
         original.load_event = new_o.load_event
         original.observation_date = new_o.observation_date
         original.observation_updated_at = new_o.observation_updated_at
+        original.iconic_taxon_id = new_o.iconic_taxon_id
+        original.iconic_taxon_name = new_o.iconic_taxon_name
         return original
 
     def copy(self, original, raw_obs):
