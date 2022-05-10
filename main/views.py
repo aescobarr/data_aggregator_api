@@ -49,5 +49,5 @@ def stats_region(request):
     if request.method == 'GET':
         data = []
         for s in Stats.objects.all().order_by('region__name'):
-            data.append( { "region_name": s.region.name,"region_slug":s.region.slug,"n_observations": s.n_observations} )
+            data.append( { "id": s.region.id, "region_name": s.region.name,"region_slug":s.region.slug,"n_observations": s.n_observations} )
         return Response(data=data, status=status.HTTP_200_OK)

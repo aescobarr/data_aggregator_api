@@ -5,7 +5,7 @@ from main.models import Observation, Region
 class RegionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Region
-        fields = ['name','x_min','x_max','y_min','y_max']
+        fields = ['id','name','x_min','x_max','y_min','y_max']
 
 
 class ObservationSerializer(serializers.ModelSerializer):
