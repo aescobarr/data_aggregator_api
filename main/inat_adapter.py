@@ -42,6 +42,7 @@ class InatAdapter(BaseAdapter):
                 iconic_taxon_id = taxon['iconic_taxon_id']
         except KeyError:
             pass
+        author = raw_obs['user']['login']
         native_id = raw_obs['id']
         original_url = raw_obs['uri']
         updated_at = raw_obs['updated_at']
@@ -92,7 +93,8 @@ class InatAdapter(BaseAdapter):
             observation_updated_at = updated_at,
             region = region,
             iconic_taxon_name = iconic_taxon_name,
-            iconic_taxon_id = iconic_taxon_id
+            iconic_taxon_id = iconic_taxon_id,
+            author = author
         )
         return o
 
@@ -129,6 +131,7 @@ class InatAdapter(BaseAdapter):
         original.observation_updated_at = new_o.observation_updated_at
         original.iconic_taxon_id = new_o.iconic_taxon_id
         original.iconic_taxon_name = new_o.iconic_taxon_name
+        original.author = new_o.author
         return original
 
     def copy(self, original, raw_obs):

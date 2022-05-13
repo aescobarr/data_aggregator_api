@@ -55,6 +55,7 @@ class Observation(models.Model):
     region = models.ForeignKey(Region, blank=True, null=True, on_delete=models.CASCADE, )
     iconic_taxon_id = models.IntegerField(blank=True, null=True)
     iconic_taxon_name = models.TextField(blank=True, null=True)
+    author = models.TextField(blank=True, null=True)
     objects = GeoManager()
 
     def __str__(self):
