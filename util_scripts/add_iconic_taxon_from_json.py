@@ -12,6 +12,10 @@ for file in result:
     data = json.load(json_data)
     for d in data:
         id = d['id']
-        taxon_id = d['taxon']['iconic_taxon_id']
-        taxon = d['taxon']['iconic_taxon_name']
-        print("update main_observation set iconic_taxon_id={0}, iconic_taxon_name='{1}' where native_id='{2}';".format(taxon_id,taxon,id))
+        try:
+            taxon_id = d['taxon']['iconic_taxon_id']
+            taxon = d['taxon']['iconic_taxon_name']
+            print("update main_observation set iconic_taxon_id={0}, iconic_taxon_name='{1}' where native_id='{2}';".format(taxon_id,taxon,id))
+        except KeyError:
+            print("-- not found key for observation {0}".format(id))
+
