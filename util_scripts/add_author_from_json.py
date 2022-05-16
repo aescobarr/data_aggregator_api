@@ -13,7 +13,7 @@ for file in result:
     for d in data:
         id = d['id']
         author = d['user']['login']
-        print("update main_observation set author='{0}' where native_id={1};".format(author,id))
+        print("update main_observation set author='{0}' where native_id='{1}';".format(author,id))
 
 
 
