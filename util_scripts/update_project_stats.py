@@ -114,10 +114,24 @@ def update_region(origin, region_id, slug):
     time.sleep(10)
 
 
+def create_or_update_blank_entry(origin, region_id):
+    data_project = DataProject.objects.get(slug=origin)
+    region = Region.objects.get(pk=region_id)
+    try:
+        stats = Stats.objects.get(region=region, project=data_project)
+    except Stats.DoesNotExist:
+        stats = Stats(region=region, project=data_project)
+    stats.n_observations = 0
+    stats.save()
+
+
 def update_all_regions(origin):
     for key in region_project:
         if region_project[key] != '':
             update_region(origin,key,region_project[key])
+        else:
+            region_id = key
+            create_or_update_blank_entry(origin, region_id)
 
 
 def main(argv):
