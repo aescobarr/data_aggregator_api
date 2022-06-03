@@ -17,7 +17,7 @@ region_project = {
     54 : 'kaisariani-forest-bioblitz-2022',
     56 : '',
     58 : 'exoticpt',
-    60 : '',
+    # 60 : '',
     61 : 'exocat',
     41 : 'bioblitz-wien-2022',
     57 : 'bioblitz-ias-bulgaria',
