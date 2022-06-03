@@ -1,10 +1,11 @@
 import init_project
 from django.contrib.gis.geos import GEOSGeometry
-from main.models import Observation, Stats
+from main.models import Observation, Stats, Region
 import csv
 
 def load_obs():
     origin = 'gbif'
+    tenerife = Region.objects.get(pk=60)
     Observation.objects.filter(origin=origin).delete()
     observations = []
     wkt_point = 'POINT( {0} {1} )'
@@ -27,7 +28,8 @@ def load_obs():
                     observation_time_string=observation_time_string,
                     picture_url=picture_url,
                     author=author,
-                    origin=origin
+                    origin=origin,
+                    region=tenerife
                 )
 
                 observations.append(o)
@@ -35,7 +37,7 @@ def load_obs():
                 firstrow = False
 
     Observation.objects.bulk_create(observations)
-    stats_tenerife = Stats.objects.get(region_id=60)
+    stats_tenerife = Stats.objects.get(region=tenerife)
     stats_tenerife.n_observations = len(observations)
     stats_tenerife.save()
 
