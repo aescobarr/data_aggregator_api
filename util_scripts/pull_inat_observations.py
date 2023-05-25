@@ -108,7 +108,8 @@ def main():
     #l = LoadEvent.objects.get(pk=50)
     #replay_event(l, clear=True)
     loadevent_log.debug("******** Starting LoadEvent ************")
-    load_inaturalist('alien-csi-bioblitz')
+    #load_inaturalist('alien-csi-bioblitz')
+    load_inaturalist('alien-csi-bioblitz-2023')
     loadevent_log.debug("******** Finished LoadEvent ************")
 
 

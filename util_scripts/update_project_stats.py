@@ -11,24 +11,33 @@ import logging
 stats_log = logging.getLogger('stats_update_logger')
 
 region_project = {
-    8 : 'akrotiri-bioblitz-2022',
+    # 8 : 'akrotiri-bioblitz-2022',
+    8 : 'akrotiri-bioblitz-2023',
     44 : '',
-    53 : '',
-    54 : 'kaisariani-forest-bioblitz-2022',
-    56 : '',
-    58 : 'exoticpt',
+    #53 : '',
+    # 54 : 'kaisariani-forest-bioblitz-2022',
+    54 : 'mt-imittos-and-kaisariani-aesthetic-forest-bioblitz',
+    #56 : '',
+    # 58 : 'exoticpt',
+    # 58 : '',
     # 60 : '',
-    61 : 'exocat',
-    41 : 'bioblitz-wien-2022',
+    # 61 : 'exocat',
+    61 : '',
+    # 41 : 'bioblitz-wien-2022',
+    # 41 : '',
     57 : 'bioblitz-ias-bulgaria',
-    45 : 'ias-bioblitz-czech-republic',
-    64 : 'turkiye-de-bulunan-bazi-egzotik-turlerin-izlenmesi',
-    55 : 'ias-bioblitz-sardegna',
-    65 : 'alien-species-in-poland-bioblitz-2022'
+    # 45 : 'ias-bioblitz-czech-republic',
+    45 : 'biosmrst-2023',
+    # 64 : 'turkiye-de-bulunan-bazi-egzotik-turlerin-izlenmesi',
+    64 : 'turkiye-alien-bioblitz-2023',
+    # 55 : 'ias-bioblitz-sardegna',
+    55 : 'bioblitz-sardegna-2023',
+    # 65 : 'alien-species-in-poland-bioblitz-2022'
+    65 : 'alien-species-in-poland-bioblitz-2023'
 }
 
+# Projects from 2022
 # https://www.inaturalist.org/projects/alien-csi-bioblitz - umbrella
-
 # https://www.inaturalist.org/projects/exocat | place_id - https://www.inaturalist.org/places/61614
 # https://www.inaturalist.org/projects/bioblitz-wien-2022 | place_id - https://www.inaturalist.org/places/129695
 # https://www.inaturalist.org/projects/bioblitz-ias-bulgaria | place_id - https://www.inaturalist.org/places/12210
