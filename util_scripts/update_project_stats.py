@@ -25,7 +25,7 @@ region_project = {
     61 : '',
     # 41 : 'bioblitz-wien-2022',
     # 41 : '',
-    57 : 'bioblitz-ias-bulgaria',
+    57 : 'bioblitz-ias-bulgaria-2023',
     # 45 : 'ias-bioblitz-czech-republic',
     45 : 'biosmrst-2023',
     # 64 : 'turkiye-de-bulunan-bazi-egzotik-turlerin-izlenmesi',
